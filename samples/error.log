@@ -1,0 +1,80 @@
+2026-09-09 08:00:01 INFO  app.boot loading configuration from /etc/app/config.yaml
+2026-09-09 08:00:02 INFO  app.boot connected to postgres://10.0.0.9:3306/billing
+2026-09-09 08:00:03 INFO  http.server listening on 0.0.0.0:8080
+2026-09-09 08:01:15 INFO  http.req GET /api/orders 200 cost=12ms uid=1001
+2026-09-09 08:01:44 WARN  http.client upstream /inventory slow, cost=812ms
+2026-09-09 08:02:03 ERROR order.svc failed to create order for uid=1001
+Traceback (most recent call last):
+  File "/srv/app/order/service.py", line 88, in create_order
+    inventory = self.client.get_sku(sku_id)
+  File "/srv/app/http/client.py", line 210, in get_sku
+    raise TimeoutError("upstream timed out after 3000ms")
+TimeoutError: upstream timed out after 3000ms
+2026-09-09 08:02:04 ERROR order.svc failed to create order for uid=1002
+Traceback (most recent call last):
+  File "/srv/app/order/service.py", line 88, in create_order
+    inventory = self.client.get_sku(sku_id)
+  File "/srv/app/http/client.py", line 210, in get_sku
+    raise TimeoutError("upstream timed out after 3000ms")
+TimeoutError: upstream timed out after 3000ms
+2026-09-09 08:02:31 WARN  db.pool connection usage 87% (87/100)
+2026-09-09 08:03:02 ERROR billing.repo insert invoice failed
+Traceback (most recent call last):
+  File "/srv/app/billing/repo.py", line 154, in insert
+    cursor.execute(sql, params)
+sqlite3.OperationalError: database is locked
+2026-09-09 08:03:40 ERROR profile.api get profile failed uid=2045
+Traceback (most recent call last):
+  File "/srv/app/profile/api.py", line 41, in get
+    city = profile.address.city
+AttributeError: 'NoneType' object has no attribute 'city'
+2026-09-09 08:04:10 ERROR auth.mw token verify failed uid=guest
+Traceback (most recent call last):
+  File "/srv/app/auth/middleware.py", line 66, in verify
+    claims = jwt.decode(tok, secret)
+PermissionError: [Errno 13] access is denied: token signature invalid
+2026-09-09 08:04:55 ERROR order.svc failed to create order for uid=1003
+Traceback (most recent call last):
+  File "/srv/app/order/service.py", line 88, in create_order
+    inventory = self.client.get_sku(sku_id)
+  File "/srv/app/http/client.py", line 210, in get_sku
+    raise TimeoutError("upstream timed out after 3000ms")
+TimeoutError: upstream timed out after 3000ms
+2026-09-09 08:05:20 INFO  http.req GET /api/health 200 cost=2ms
+2026-09-09 08:05:48 FATAL worker.oom worker-3 crashed
+java.lang.OutOfMemoryError: Java heap space
+	at com.app.Worker.run(Worker.java:132)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2026-09-09 08:06:02 ERROR report.gen render failed
+Traceback (most recent call last):
+  File "/srv/app/report/gen.py", line 25, in render
+    total = price * qty
+TypeError: unsupported operand type(s) for *: 'str' and 'int'
+2026-09-09 08:06:30 ERROR billing.repo insert invoice failed
+Traceback (most recent call last):
+  File "/srv/app/billing/repo.py", line 154, in insert
+    cursor.execute(sql, params)
+sqlite3.OperationalError: database is locked
+2026-09-09 08:07:01 ERROR plugin.load cannot load plugin etl
+Traceback (most recent call last):
+  File "/srv/app/plugin/loader.py", line 19, in load
+    module = importlib.import_module(name)
+ModuleNotFoundError: No module named 'pandas'
+2026-09-09 08:07:22 WARN  http.client upstream /pricing slow, cost=940ms
+2026-09-09 08:07:45 ERROR order.svc failed to create order for uid=1004
+Traceback (most recent call last):
+  File "/srv/app/order/service.py", line 88, in create_order
+    inventory = self.client.get_sku(sku_id)
+  File "/srv/app/http/client.py", line 210, in get_sku
+    raise TimeoutError("upstream timed out after 3000ms")
+TimeoutError: upstream timed out after 3000ms
+2026-09-09 08:08:10 ERROR profile.api get profile failed uid=2099
+Traceback (most recent call last):
+  File "/srv/app/profile/api.py", line 41, in get
+    city = profile.address.city
+AttributeError: 'NoneType' object has no attribute 'city'
+2026-09-09 08:08:40 FATAL app.core unrecoverable state, shutting down
+java.lang.IllegalStateException: Connection pool has been closed
+	at com.app.Pool.borrow(Pool.java:58)
+	at com.app.App.main(App.java:21)
+2026-09-09 08:09:00 INFO  app.boot restarting process ...
